@@ -1,11 +1,10 @@
-package scala.com.epam.spark
+package scala
 
-
-import com.epam.spark.Engine
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import com.epam.spark.Engine
 
-class TestEngine {
+class EngineTest {
 
   @Test
   def clearKeyTest(): Unit = {

@@ -15,8 +15,8 @@ object Main extends App with Engine {
   //resolve input argument
   val (master: String, file: String, saveFile: String) = args.toList match {
     case firstArg :: secondArg :: thirdArg :: Nil => (firstArg, secondArg, thirdArg)
-    case firstArg :: Nil => (firstArg, "src/main/resourses/countries_of_the_world.csv", "./" + new Date().getTime)
-    case Nil => ("local", "src/main/resourses/countries_of_the_world.csv", "./" + new Date().getTime)
+    case firstArg :: Nil => (firstArg, "gs://jar_storage/countries_of_the_world.csv", "./" + new Date().getTime)
+    case Nil => ("local", "gs://jar_storage/countries_of_the_world.csv", "./" + new Date().getTime)
   }
 
   private val sparkContext: SparkContext = SparkSession

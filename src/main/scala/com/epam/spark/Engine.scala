@@ -1,6 +1,5 @@
 package com.epam.spark
 
-
 /**
   * object with main logic
   * inner object sparkContext*/

@@ -1,7 +1,6 @@
 package com.epam.spark
 
-
-import org.apache.spark.sql.{DataFrame, SQLContext, SparkSession}
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
 
 object Main extends App {

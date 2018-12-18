@@ -1,6 +1,6 @@
 package com.epam.spark
 
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession}
 
 class TaskUtil {
   def createDataFrame(sparkSession: SparkSession, path: String): DataFrame = {
@@ -10,17 +10,19 @@ class TaskUtil {
       load(path)
   }
 
-  def task1(sparkSession: SparkSession, dataFrame: DataFrame): Unit = {
+  def task1(sparkSession: SparkSession, dataFrame: DataFrame): Dataset[Row] = {
 
     //  val sqlDF: DataFrame = spark.sql("SELECT  hotel_continent,hotel_country,hotel_market,count(*) as count \nFROM train" +
     //    "\nGROUP BY hotel_continent,hotel_country,hotel_market\nORDER BY count desc\nLIMIT 3")
     //  sqlDF.show()
 
-    dataFrame.groupBy("hotel_continent", "hotel_country", "hotel_market").
-      count()
-      .orderBy(org.apache.spark.sql.functions.col("count").desc).limit(3)
-      .show()
+    val value: Dataset[Row] = dataFrame
+      .groupBy("hotel_continent", "hotel_country", "hotel_market")
+      .count()
+      .orderBy(org.apache.spark.sql.functions.col("count").desc)
+      .limit(3)
 
+    return value
   }
 
 

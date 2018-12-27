@@ -1,20 +1,18 @@
 package com.epam.spark
 
-import org.apache.spark.sql.DataFrame
+import org.apache.spark.rdd.RDD
 
 
 object Main extends App {
 
   val sparkSession = SparkConfiguration.sparkSession
-  var taskUtil = new TaskUtil
-  var trainDF: DataFrame = taskUtil.createDataFrame(sparkSession, "src\\main\\resources\\train.csv")
-  //trainDF.createOrReplaceTempView("train")
-  //trainDF.show(5)
+  var trainRDD: RDD[String] = sparkSession.sparkContext.textFile("src/resorses/train.csv")
 
+  private val value: RDD[Hotel] = trainRDD.map(a => HotelBuilder.createHotel(a))
 
-  taskUtil.task1(sparkSession, trainDF).show()
-  taskUtil.task2(sparkSession, trainDF)
-  taskUtil.task3(sparkSession, trainDF)
+  println(value.count())
+  println(value.first())
+
 
 
   sparkSession.close()

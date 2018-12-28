@@ -14,4 +14,5 @@ class Hotel(sp: SparkSession, srch_adults_cntI: String, hotel_continentI: String
 
 
   override def toString = s"Hotel($srch_adults_cnt, $hotel_continent, $hotel_country, $hotel_market, $hotel_cluster)"
+
 }

@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.epam.spark</groupId>
-    <artifactId>ParseCountries</artifactId>
-    <version>1.2</version>
+    <artifactId>BD101_Spark_core_1</artifactId>
+    <version>1.0</version>
 
     <properties>
 

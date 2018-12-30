@@ -3,26 +3,40 @@ package com.epam.spark
 import java.io.StringReader
 import java.util
 
-import org.apache.spark.sql.SparkSession
 
+case class Hotel(
+                  //TODO Проінспектувати індекси на валідність даних
+                  srch_adults_cnt: Int,
+                  hotel_continent: Int,
+                  hotel_country: Int,
+                  hotel_market: Int,
+                  hotel_cluster: Int,
+                  srch_children_cnt: Int,
+                  is_booking: Int,
+                  user_location_country: Int,
+                  srch_destination_id: Int
+                ) {
 
-case class Hotel(sp: SparkSession, srch_adults_cntI: String, hotel_continentI: String, hotel_countryI: String, hotel_marketI: String, hotel_clusterI: String) {
-  private var spark: SparkSession = sp
-
-  var srch_adults_cnt: String = srch_adults_cntI
-  var hotel_continent: String = hotel_continentI
-  var hotel_country: String = hotel_countryI
-  var hotel_market: String = hotel_marketI
-  var hotel_cluster: String = hotel_clusterI
-
+  override def toString = "Hotel(" +
+    s" \n srch_adults_cnt = $srch_adults_cnt" +
+    s",\n hotel_continent = $hotel_continent" +
+    s",\n hotel_country = $hotel_country" +
+    s",\n hotel_market = $hotel_market" +
+    s",\n hotel_cluster = $hotel_cluster" +
+    s",\n srch_children_cnt = $srch_children_cnt" +
+    s",\n is_booking = $is_booking" +
+    s",\n user_location_country = $user_location_country" +
+    s",\n srch_destination_id = $srch_destination_id)\n \n"
 }
+
 
 object Hotel {
 
+  val srch_adults_cnt = 13
   val hotel_continent = 18
   val hotel_country = 19
   val hotel_market = 20
-  val srch_adults_cnt = 13
+  val hotel_cluster = 23
   val srch_children_cnt = 14
   val is_booking = 21
   val user_location_country = 3
@@ -32,22 +46,38 @@ object Hotel {
   def isHeaderCsv(line: String): Boolean = line.startsWith("date_time,site_name")
 
   def apply(row: String): Hotel = {
-    var parser: util.ArrayList[String] = null
+    var parser: List[String] = null
     try {
-      parser = new Parser().parseLine(new StringReader(row))
+      parser = new Parser().parseLine(row)
     } catch {
       case e: Exception => print("Exception!")
     }
 
-    val getCol: Int => String = parser.get _
-    //    val toInt: String => Int =
+    //TODO Проінспектувати індекси на валідність даних
+    val getCol: Int => String = parser(_)
     return new Hotel(
-      SparkConfiguration.sparkSession,
-      (getCol(1)),
-      (getCol(4)),
-      (getCol(5)),
-      (getCol(6)),
-      (getCol(7)))
+      toInt(getCol(srch_adults_cnt)),
+      toInt(getCol(hotel_continent)),
+      toInt(getCol(hotel_country)),
+      toInt(getCol(hotel_market)),
+      toInt(getCol(hotel_cluster)),
+      toInt(getCol(srch_children_cnt)),
+      toInt(getCol(is_booking)),
+      toInt(getCol(user_location_country)),
+      toInt(getCol(srch_destination_id)))
 
+  }
+
+  private def toInt(input: String): Int = {
+    val checkIsNotNull: String = if (input.length != 0) input else "0"
+
+    var toInt = 0
+    try {
+      return Integer.valueOf(checkIsNotNull)
+    } catch {
+      case e: IllegalArgumentException => print("Arguments exeption - [ " + input + " ] to Integer \n")
+    }
+
+    return toInt
   }
 }

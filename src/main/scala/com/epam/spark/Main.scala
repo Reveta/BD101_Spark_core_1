@@ -8,11 +8,24 @@ object Main extends App {
   val sparkSession = SparkConfiguration.sparkSession
   var trainRDD: RDD[String] = sparkSession.sparkContext.textFile("src\\main\\scala\\resources\\train.csv")
 
-  private val value: RDD[Hotel] = trainRDD.map(Hotel(_))
 
-  println(value.count())
-  println(value.first())
+  private val hotelsRDD: RDD[Hotel] = trainRDD
+    .filter(a => !Hotel.isHeaderCsv(a))
+    .map(Hotel(_))
 
+  private var hotelDuoRDD: RDD[Hotel] = hotelsRDD
+    .filter(a => a.srch_adults_cnt == 2)
+
+//  private val topHotelsDuoRDD: RDD[(Int, Int)] = hotelDuoRDD
+//    .groupBy(_.hotel_continent)
+//    .map(kv => (kv._1, kv._2.size))
+//    .sortBy(_._2, false)
+
+
+//  private val tuples: Array[(Int, Int)] = topHotelsDuoRDD.take(3)
+//  tuples.foreach(print)
+
+hotelDuoRDD.take(3).foreach(print)
 
   sparkSession.close()
 

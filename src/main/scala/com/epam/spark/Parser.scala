@@ -36,48 +36,53 @@ class Parser {
     * returns a row of values as a list
     * returns null if you are past the end of the line
     */
-  @throws[Exception]
-  def parseLine(r: Reader): util.ArrayList[String] = {
-    var ch: Int = r.read
-    while ( {
-      ch == '\r'
-    }) { //ignore linefeed characters wherever they are, particularly just before end of file
-      ch = r.read
-    }
-    if (ch < 0) return null
-    val store = new util.ArrayList[String]
-    var curVal = new StringBuilder
-    var inquotes = false
-    var started = false
-    while ( {
-      ch >= 0
-    }) {
-      if (inquotes) {
-        started = true
-        if (ch == '\"') inquotes = false
-        else curVal.append(ch.toChar)
-      }
-      else if (ch == '\"') {
-        inquotes = true
-        if (started) { // if this is the second quote in a value, add a quote
-          // this is for the double quote in the middle of a value
-          curVal.append('\"')
-        }
-      }
-      else if (ch == ',') {
-        store.add(curVal.toString)
-        curVal = new StringBuilder
-        started = false
-      }
-      else if (ch == '\r') {
-        //ignore LF characters
-      }
-      else if (ch == '\n') { //end of a line, break out
-      }
-      else curVal.append(ch.toChar)
-      ch = r.read
-    }
-    store.add(curVal.toString)
-    return store
+  //  @throws[Exception]
+  //  def parseLine(r: Reader): util.ArrayList[String] = {
+  //    var ch: Int = r.read
+  //    while ( {
+  //      ch == '\r'
+  //    }) { //ignore linefeed characters wherever they are, particularly just before end of file
+  //      ch = r.read
+  //    }
+  //    if (ch < 0) return null
+  //    val store = new util.ArrayList[String]
+  //    var curVal = new StringBuilder
+  //    var inquotes = false
+  //    var started = false
+  //    while ( {
+  //      ch >= 0
+  //    }) {
+  //      if (inquotes) {
+  //        started = true
+  //        if (ch == '\"') inquotes = false
+  //        else curVal.append(ch.toChar)
+  //      }
+  //      else if (ch == '\"') {
+  //        inquotes = true
+  //        if (started) { // if this is the second quote in a value, add a quote
+  //           this is for the double quote in the middle of a value
+  //          curVal.append('\"')
+  //        }
+  //      }
+  //      else if (ch == ',') {
+  //        store.add(curVal.toString)
+  //        curVal = new StringBuilder
+  //        started = false
+  //      }
+  //      else if (ch == '\r') {
+  //        ignore LF characters
+  //      }
+  //      else if (ch == '\n') { //end of a line, break out
+  //      }
+  //      else curVal.append(ch.toChar)
+  //      ch = r.read
+  //    }
+  //    store.add(curVal.toString)
+  //    return store
+  //  }
+
+  def parseLine(r: String): List[String] = {
+    val strings: Array[String] = r.split(",")
+  return strings.toList
   }
 }

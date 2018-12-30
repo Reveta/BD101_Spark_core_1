@@ -1,20 +1,19 @@
 package com.epam.spark
 
-import java.io.StringReader
-import java.util
-
 
 case class Hotel(
                   //TODO Проінспектувати індекси на валідність даних
-                  srch_adults_cnt: Int,
-                  hotel_continent: Int,
-                  hotel_country: Int,
-                  hotel_market: Int,
-                  hotel_cluster: Int,
-                  srch_children_cnt: Int,
-                  is_booking: Int,
-                  user_location_country: Int,
-                  srch_destination_id: Int
+
+                  srch_adults_cnt: String,
+                  hotel_continent: String,
+                  hotel_country: String,
+                  hotel_market: String,
+                  hotel_cluster: String,
+                  srch_children_cnt: String,
+                  is_booking: String,
+                  user_location_country: String,
+                  srch_destination_id: String
+
                 ) {
 
   override def toString = "Hotel(" +
@@ -32,52 +31,38 @@ case class Hotel(
 
 object Hotel {
 
-  val srch_adults_cnt = 13
-  val hotel_continent = 18
-  val hotel_country = 19
-  val hotel_market = 20
-  val hotel_cluster = 23
-  val srch_children_cnt = 14
-  val is_booking = 21
-  val user_location_country = 3
-  val srch_destination_id = 16
+  val ADULTS = 13
+  val HOTEL_CONTINENT = 20
+  val HOTEL_COUNTRY = 21
+  val HOTEL_MARKET = 22
+  val HOTEL_CLUSTER = 23
+  val CHILDREN = 14
+  val IS_BOOKING = 18
+  val USER_LOCATION_COUNTRY = 3
+  val DESTINATION_ID = 16
 
 
   def isHeaderCsv(line: String): Boolean = line.startsWith("date_time,site_name")
 
-  def apply(row: String): Hotel = {
-    var parser: List[String] = null
+  def createHotel(metadata: Array[String]): Hotel =
     try {
-      parser = new Parser().parseLine(row)
-    } catch {
-      case e: Exception => print("Exception!")
-    }
+    val srch_adults_cnt: String = metadata(ADULTS)
+    val hotel_continent: String = metadata(HOTEL_CONTINENT)
+    val hotel_country: String = metadata(HOTEL_COUNTRY)
+    val hotel_market: String = metadata(HOTEL_MARKET)
+    val hotel_cluster: String = metadata(HOTEL_CLUSTER)
+    val srch_children_cnt: String = metadata(CHILDREN)
+    val is_booking: String = metadata(IS_BOOKING)
+    val user_location_country: String = metadata(USER_LOCATION_COUNTRY)
+    val srch_destination_id: String = metadata(DESTINATION_ID)
 
-    //TODO Проінспектувати індекси на валідність даних
-    val getCol: Int => String = parser(_)
-    return new Hotel(
-      toInt(getCol(srch_adults_cnt)),
-      toInt(getCol(hotel_continent)),
-      toInt(getCol(hotel_country)),
-      toInt(getCol(hotel_market)),
-      toInt(getCol(hotel_cluster)),
-      toInt(getCol(srch_children_cnt)),
-      toInt(getCol(is_booking)),
-      toInt(getCol(user_location_country)),
-      toInt(getCol(srch_destination_id)))
+    val hotel = new Hotel(srch_adults_cnt, hotel_continent, hotel_country, hotel_market, hotel_cluster, srch_children_cnt,
+      is_booking, user_location_country, srch_destination_id)
 
-  }
+    return hotel
 
-  private def toInt(input: String): Int = {
-    val checkIsNotNull: String = if (input.length != 0) input else "0"
-
-    var toInt = 0
-    try {
-      return Integer.valueOf(checkIsNotNull)
-    } catch {
-      case e: IllegalArgumentException => print("Arguments exeption - [ " + input + " ] to Integer \n")
-    }
-
-    return toInt
+  } catch {
+    case e: Exception =>
+      return null
   }
 }

@@ -46,16 +46,17 @@ object Hotel {
   def isHeaderCsv(line: String): Boolean = line.startsWith("date_time,site_name")
 
   def apply(row: String): Hotel = {
+    print("[INFO] Start creating Hotel - " + row + "\n")
     var parser: List[String] = null
     try {
       parser = new Parser().parseLine(row)
     } catch {
-      case e: Exception => print("Exception!")
+      case e: Exception => print("[ERROR]CastException! - " + row + "\n")
     }
 
     //TODO Проінспектувати індекси на валідність даних
     val getCol: Int => String = parser(_)
-    return new Hotel(
+    val hotel: Hotel = new Hotel(
       toInt(getCol(srch_adults_cnt)),
       toInt(getCol(hotel_continent)),
       toInt(getCol(hotel_country)),
@@ -66,6 +67,7 @@ object Hotel {
       toInt(getCol(user_location_country)),
       toInt(getCol(srch_destination_id)))
 
+    return hotel
   }
 
   private def toInt(input: String): Int = {

@@ -16,16 +16,12 @@ object Main extends App {
   private var hotelDuoRDD: RDD[Hotel] = hotelsRDD
     .filter(a => a.srch_adults_cnt == 2)
 
-//  private val topHotelsDuoRDD: RDD[(Int, Int)] = hotelDuoRDD
-//    .groupBy(_.hotel_continent)
-//    .map(kv => (kv._1, kv._2.size))
-//    .sortBy(_._2, false)
+  private val topHotelsDuoRDD: RDD[(Int, Int)] = hotelDuoRDD
+    .groupBy(_.hotel_continent)
+    .map(kv => (kv._1, kv._2.size))
+    .sortBy(_._2, false)
 
-
-//  private val tuples: Array[(Int, Int)] = topHotelsDuoRDD.take(3)
-//  tuples.foreach(print)
-
-hotelDuoRDD.take(3).foreach(print)
+  topHotelsDuoRDD.take(3).foreach(print)
 
   sparkSession.close()
 

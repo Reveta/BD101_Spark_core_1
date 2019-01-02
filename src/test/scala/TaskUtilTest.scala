@@ -1,9 +1,5 @@
-import java.util
-
-import com.epam.spark.TaskUtil
-import com.epam.spark.SparkConfiguration
-import org.apache.spark.sql.{DataFrame, Row}
-
+import com.epam.spark.{Hotel, SparkConfiguration, TaskUtil}
+import org.apache.spark.rdd.RDD
 import org.junit.{Assert, Test}
 
 class TaskUtilTest {
@@ -13,29 +9,29 @@ class TaskUtilTest {
     val expected: String = "[[2,50,628,85501], [2,50,675,63024], [2,50,365,47175]]"
     val expectedCount: Long = 3
 
-    val frame: DataFrame = new TaskUtil().createDataFrame(SparkConfiguration.sparkSession, "src/test/resources/test.csv")
-    val actual: util.List[Row] = new TaskUtil().task1(SparkConfiguration.sparkSession, frame).collectAsList()
+    val rdd: RDD[Hotel] = new TaskUtil().createRDD(SparkConfiguration.sparkSession, "src/test/resources/test.csv")
+    val actual: Array[((String, String, String), Int)] = new TaskUtil().task1(rdd)
 
 
     Assert.assertEquals(expected, actual.toString)
-    Assert.assertEquals(expectedCount, actual.size())
+    Assert.assertEquals(expectedCount, actual.length)
   }
 
 
   @Test
   def dataFrameNotNull(): Unit = {
-    Assert.assertNotNull(new TaskUtil().createDataFrame(SparkConfiguration.sparkSession, "src/test/resources/test.csv"))
+    Assert.assertNotNull(new TaskUtil().createRDD(SparkConfiguration.sparkSession, "src/test/resources/test.csv"))
   }
 
   @Test(expected = classOf[org.apache.spark.sql.AnalysisException])
   def wrongInputPathTest(): Unit = {
-    val actual: DataFrame = new TaskUtil().createDataFrame(SparkConfiguration.sparkSession, "hvghfg")
+    val actual: RDD[Hotel]  = new TaskUtil().createRDD(SparkConfiguration.sparkSession, "hvghfg")
 
   }
 
   @Test(expected = classOf[java.lang.IllegalArgumentException])
   def nullInputPathTest(): Unit = {
-   val actual: DataFrame = new TaskUtil().createDataFrame(SparkConfiguration.sparkSession, "")
+   val actual: RDD[Hotel]  = new TaskUtil().createRDD(SparkConfiguration.sparkSession, "")
 
   }
 

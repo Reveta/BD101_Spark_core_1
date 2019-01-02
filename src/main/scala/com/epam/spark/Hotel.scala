@@ -2,8 +2,6 @@ package com.epam.spark
 
 
 case class Hotel(
-                  //TODO Проінспектувати індекси на валідність даних
-
                   srch_adults_cnt: String,
                   hotel_continent: String,
                   hotel_country: String,

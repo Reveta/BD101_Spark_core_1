@@ -1,13 +1,13 @@
 package com.epam.spark
 
+import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession}
 
 class TaskUtil {
-  def createDataFrame(sparkSession: SparkSession, path: String): DataFrame = {
-    sparkSession.read.format("csv").
-      option("header", "true").
-      option("delimiter", ",").
-      load(path)
+  def createRDD(sparkSession: SparkSession, path: String): RDD[String] = {
+       sparkSession
+      .sparkContext
+      .textFile(path)
   }
 
   def task1(sparkSession: SparkSession, dataFrame: DataFrame): Dataset[Row] = {

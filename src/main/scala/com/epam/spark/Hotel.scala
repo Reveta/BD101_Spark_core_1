@@ -2,19 +2,15 @@ package com.epam.spark
 
 
 case class Hotel(
-                  //TODO Проінспектувати індекси на валідність даних
-
-                  srch_adults_cnt: String,
-                  hotel_continent: String,
-                  hotel_country: String,
-                  hotel_market: String,
-                  hotel_cluster: String,
-                  srch_children_cnt: String,
-                  is_booking: String,
-                  user_location_country: String,
-                  srch_destination_id: String
-
-                ) {
+                  srch_adults_cnt: Int,
+                  hotel_continent: Int,
+                  hotel_country: Int,
+                  hotel_market: Int,
+                  hotel_cluster: Int,
+                  srch_children_cnt: Int,
+                  is_booking: Int,
+                  user_location_country: Int,
+                  srch_destination_id: Int) {
 
   override def toString = "Hotel(" +
     s" \n srch_adults_cnt = $srch_adults_cnt" +
@@ -44,25 +40,30 @@ object Hotel {
 
   def isHeaderCsv(line: String): Boolean = line.startsWith("date_time,site_name")
 
-  def createHotel(metadata: Array[String]): Hotel =
+  def apply(row: String): Hotel = {
     try {
-    val srch_adults_cnt: String = metadata(ADULTS)
-    val hotel_continent: String = metadata(HOTEL_CONTINENT)
-    val hotel_country: String = metadata(HOTEL_COUNTRY)
-    val hotel_market: String = metadata(HOTEL_MARKET)
-    val hotel_cluster: String = metadata(HOTEL_CLUSTER)
-    val srch_children_cnt: String = metadata(CHILDREN)
-    val is_booking: String = metadata(IS_BOOKING)
-    val user_location_country: String = metadata(USER_LOCATION_COUNTRY)
-    val srch_destination_id: String = metadata(DESTINATION_ID)
+//      print("[INFO] Start creating Hotel - " + row + "\n")
 
-    val hotel = new Hotel(srch_adults_cnt, hotel_continent, hotel_country, hotel_market, hotel_cluster, srch_children_cnt,
-      is_booking, user_location_country, srch_destination_id)
+      val rowArray: Array[String] = row.split(",", -1)
+//      if (rowArray.length != 24) { println(Console.GREEN + "[ERROR] " + "rowArray.length != 24" + " - " + row + Console.RESET)}
 
-    return hotel
+      val hotel: Hotel = new Hotel(
+        Integer.valueOf(rowArray(ADULTS)),
+        Integer.valueOf(rowArray(HOTEL_CONTINENT)),
+        Integer.valueOf(rowArray(HOTEL_COUNTRY)),
+        Integer.valueOf(rowArray(HOTEL_MARKET)),
+        Integer.valueOf(rowArray(HOTEL_CLUSTER)),
+        Integer.valueOf(rowArray(CHILDREN)),
+        Integer.valueOf(rowArray(IS_BOOKING)),
+        Integer.valueOf(rowArray(USER_LOCATION_COUNTRY)),
+        Integer.valueOf(rowArray(DESTINATION_ID)))
 
-  } catch {
-    case e: Exception =>
-      return null
+      return hotel
+    } catch {
+      case e: Exception => /*println(Console.GREEN + "[ERROR] " + e.toString + " - " + row + Console.RESET)*/
+        return null
+    }
   }
+
+
 }

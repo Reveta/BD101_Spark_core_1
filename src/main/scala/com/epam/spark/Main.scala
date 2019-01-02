@@ -7,7 +7,7 @@ object Main extends App {
 
   val sparkSession = SparkConfiguration.sparkSession
   var taskUtil = new TaskUtil
-  var hotelsRDD: RDD[Hotel] = taskUtil.createRDD(sparkSession, "src\\main\\scala\\resources\\train.csv")
+  var hotelsRDD: RDD[Hotel] = taskUtil.createRDD(sparkSession, "src/test/resources/test.csv")
 
 
 //  val task1RDD: Array[((String, String, String), Int)] = taskUtil.task1(hotelsRDD)

@@ -29,7 +29,7 @@ class TaskUtil {
     hotelsRDD.filter(_ != null)
       .filter(a => a.srch_destination_id.equals(a.user_location_country))
       .groupBy(record => record.hotel_country)
-      .map(kv => (kv._1, kv._2.size))
+      .map(kv => (kv._1, kv._2.count(kv => true)))
       .sortBy(_._2, false).take(1)
 
   }
@@ -38,7 +38,7 @@ class TaskUtil {
     hotelsRDD.filter(_ != null)
       .filter(a => a.is_booking.equals("0") & !a.srch_children_cnt.equals("0"))
       .groupBy(record => (record.hotel_continent, record.hotel_country, record.hotel_market))
-      .map(kv => (kv._1, kv._2.size))
+      .map(kv => (kv._1, kv._2.count(kv => true)))
       .sortBy(_._2, false).take(3)
   }
 

@@ -10,7 +10,7 @@ class EngineTest {
 
   @Test
   def IsRddCorrect(): Unit = {
-    val rdd: RDD[Hotel] = Engine.createHotelsRDD("src/test/resources/test.csv")
+    val rdd: RDD[Hotel] = Engine.createHotelsRDD("src/test/resources/train.csv")
 
 
     Assert.assertNotNull(rdd)

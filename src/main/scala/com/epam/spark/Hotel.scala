@@ -45,7 +45,7 @@ object Hotel {
 //      print("[INFO] Start creating Hotel - " + row + "\n")
 
       val rowArray: Array[String] = row.split(",", -1)
-//      if (rowArray.length != 24) { println(Console.GREEN + "[ERROR] " + "rowArray.length != 24" + " - " + row + Console.RESET)}
+      if (rowArray.length != 24) { println(Console.GREEN + "[ERROR] " + "rowArray.length != 24" + " - " + row + Console.RESET)}
 
       val hotel: Hotel = new Hotel(
         Integer.valueOf(rowArray(ADULTS)),
@@ -60,7 +60,7 @@ object Hotel {
 
       return hotel
     } catch {
-      case e: Exception => /*println(Console.GREEN + "[ERROR] " + e.toString + " - " + row + Console.RESET)*/
+      case e: Exception => println(Console.GREEN + "[ERROR] " + e.toString + " - " + row + Console.RESET)
         return null
     }
   }

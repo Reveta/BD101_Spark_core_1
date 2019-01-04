@@ -10,17 +10,16 @@ object Engine {
   def createHotelsRDD(path: String): RDD[Hotel] = {
     return spark.sparkContext
       .textFile(path)
-      .filter(a => !Hotel.isHeaderCsv(a))
+      .filter(line => !Hotel.isHeaderCsv(line))
       .map(Hotel(_))
+      .filter(_ != null)
   }
 
   def task1(hotelsRDD: RDD[Hotel]): Array[((Int, Int, Int), Int)] = {
     println("\n[INFO] Task 1 start")
-    val notNullHotelRDD: RDD[Hotel] = hotelsRDD
-      .filter(_ != null)
 
-    val duoHotelsRDD: RDD[Hotel] = notNullHotelRDD
-      .filter(a => a.srch_adults_cnt == 2)
+    val duoHotelsRDD: RDD[Hotel] = hotelsRDD
+      .filter(_.srch_adults_cnt == 2)
 
     val groupByHotelsRDD: RDD[((Int, Int, Int), Int)] = duoHotelsRDD
       .groupBy(hotel => (hotel.hotel_continent, hotel.hotel_country, hotel.hotel_market))
@@ -43,11 +42,9 @@ object Engine {
 
   def task2(hotelsRDD: RDD[Hotel]): (Int, Int) = {
     println("\n[INFO] Task 2 start")
-    val notNullHotelRDD: RDD[Hotel] = hotelsRDD
-      .filter(_ != null)
 
-    val groupHotelsRDD: RDD[(Int, Int)] = notNullHotelRDD
-      .filter(a => a.srch_destination_id.equals(a.user_location_country))
+    val groupHotelsRDD: RDD[(Int, Int)] = hotelsRDD
+      .filter(hotel => hotel.srch_destination_id == hotel.user_location_country)
       .groupBy(_.hotel_country)
       .map(kv => (kv._1, kv._2.size))
 
@@ -68,11 +65,9 @@ object Engine {
 
   def task3(hotelsRDD: RDD[Hotel]): Array[((Int, Int, Int), Int)] = {
     println("\n[INFO] Task 3 start")
-    val notNullHotelRDD: RDD[Hotel] = hotelsRDD
-      .filter(_ != null)
 
-    val sortedHotelsRDD: RDD[((Int, Int, Int), Int)] = notNullHotelRDD
-      .filter(a => a.is_booking == 0 && !(a.srch_children_cnt == 0))
+    val sortedHotelsRDD: RDD[((Int, Int, Int), Int)] = hotelsRDD
+      .filter(hotel => hotel.is_booking == 0 && !(hotel.srch_children_cnt == 0))
       .groupBy(record => (record.hotel_continent, record.hotel_country, record.hotel_market))
       .map(kv => (kv._1, kv._2.size))
 

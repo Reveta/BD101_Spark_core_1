@@ -8,33 +8,59 @@ class EngineTest {
   val spark: SparkSession = SparkConfiguration.sparkSession
 
 
+  @Test
+  def IsRddCorrect(): Unit = {
+    val rdd: RDD[Hotel] = Engine.createHotelsRDD("src/test/resources/test.csv")
+
+
+    Assert.assertNotNull(rdd)
+  }
+
+  @Test/*(expected = IllegalArgumentException)*/
+  def wrongCSVPathTest(): Unit = {
+    val actual: RDD[Hotel]  = Engine.createHotelsRDD(" ")
+  }
+
+  @Test
   def task1Test(): Unit = {
-    val expected: String = "[[2,50,628,85501], [2,50,675,63024], [2,50,365,47175]]"
+    val expected: String = "((2,50,368),110)((6,105,29),99)((6,105,35),82)"
     val expectedCount: Long = 3
 
-    val rdd: RDD[Hotel] = Engine.createHotelsRDD("src/test/resources/test.csv")
+    val rdd: RDD[Hotel] = Engine.createHotelsRDD("src/test/resources/train.csv")
     val actual: Array[((Int, Int, Int), Int)] = Engine.task1(rdd)
 
+    val sb = StringBuilder.newBuilder
+    actual.foreach(sb.append)
 
-    Assert.assertEquals(expected, actual.toString)
+
+    Assert.assertEquals(expected, sb.toString())
     Assert.assertEquals(expectedCount, actual.length)
   }
 
   @Test
-  def dataFrameNotNull(): Unit = {
-    Assert.assertNotNull(Engine.createHotelsRDD("src/test/resources/test.csv"))
+  def task2Test(): Unit = {
+    val expected: String = "(0,0)"
+
+    val rdd: RDD[Hotel] = Engine.createHotelsRDD("src/test/resources/train.csv")
+    val actual: (Int, Int) = Engine.task2(rdd)
+
+
+    Assert.assertEquals(expected, actual.toString())
   }
 
+  @Test
+  def task3Test(): Unit = {
+    val expected: String = "((2,50,368),119)((2,50,365),66)((2,50,366),46)"
+    val expectedCount: Long = 3
 
-  @Test(expected = classOf[org.apache.spark.sql.AnalysisException])
-  def wrongInputPathTest(): Unit = {
-    val actual: RDD[Hotel]  = Engine.createHotelsRDD("hvghfg")
+    val rdd: RDD[Hotel] = Engine.createHotelsRDD("src/test/resources/train.csv")
+    val actual: Array[((Int, Int, Int), Int)] = Engine.task3(rdd)
+
+    val sb = StringBuilder.newBuilder
+    actual.foreach(sb.append)
+
+
+    Assert.assertEquals(expected, sb.toString())
+    Assert.assertEquals(expectedCount, actual.length)
   }
-
-
-  @Test(expected = classOf[java.lang.IllegalArgumentException])
-  def nullInputPathTest(): Unit = {
-    val actual: RDD[Hotel]  = Engine.createHotelsRDD("")
-  }
-
 }

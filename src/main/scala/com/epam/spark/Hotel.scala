@@ -1,31 +1,20 @@
 package com.epam.spark
 
+import java.util.Optional
+
 
 case class Hotel(
-                  srch_adults_cnt: String,
-                  hotel_continent: String,
-                  hotel_country: String,
-                  hotel_market: String,
-                  hotel_cluster: String,
-                  srch_children_cnt: String,
-                  is_booking: String,
-                  user_location_country: String,
-                  srch_destination_id: String
+                  srch_adults_cnt: Int,
+                  hotel_continent: Int,
+                  hotel_country: Int,
+                  hotel_market: Int,
+                  hotel_cluster: Int,
+                  srch_children_cnt: Int,
+                  is_booking: Int,
+                  user_location_country: Int,
+                  srch_destination_id: Int
 
-                ) {
-
-  override def toString = "Hotel(" +
-    s" \n srch_adults_cnt = $srch_adults_cnt" +
-    s",\n hotel_continent = $hotel_continent" +
-    s",\n hotel_country = $hotel_country" +
-    s",\n hotel_market = $hotel_market" +
-    s",\n hotel_cluster = $hotel_cluster" +
-    s",\n srch_children_cnt = $srch_children_cnt" +
-    s",\n is_booking = $is_booking" +
-    s",\n user_location_country = $user_location_country" +
-    s",\n srch_destination_id = $srch_destination_id)\n \n"
-}
-
+                )
 
 object Hotel {
 
@@ -44,23 +33,29 @@ object Hotel {
 
   def createHotel(metadata: Array[String]): Hotel =
     try {
-    val srch_adults_cnt: String = metadata(ADULTS)
-    val hotel_continent: String = metadata(HOTEL_CONTINENT)
-    val hotel_country: String = metadata(HOTEL_COUNTRY)
-    val hotel_market: String = metadata(HOTEL_MARKET)
-    val hotel_cluster: String = metadata(HOTEL_CLUSTER)
-    val srch_children_cnt: String = metadata(CHILDREN)
-    val is_booking: String = metadata(IS_BOOKING)
-    val user_location_country: String = metadata(USER_LOCATION_COUNTRY)
-    val srch_destination_id: String = metadata(DESTINATION_ID)
+      val srch_adults_cnt: Int = metadata(ADULTS).toInt
+      val hotel_continent: Int = metadata(HOTEL_CONTINENT).toInt
+      val hotel_country: Int = metadata(HOTEL_COUNTRY).toInt
+      val hotel_market: Int = metadata(HOTEL_MARKET).toInt
+      val hotel_cluster: Int = metadata(HOTEL_CLUSTER).toInt
+      val srch_children_cnt: Int = metadata(CHILDREN).toInt
+      val is_booking: Int = metadata(IS_BOOKING).toInt
+      val user_location_country: Int = metadata(USER_LOCATION_COUNTRY).toInt
+      val srch_destination_id: Int = metadata(DESTINATION_ID).toInt
 
-    val hotel = new Hotel(srch_adults_cnt, hotel_continent, hotel_country, hotel_market, hotel_cluster, srch_children_cnt,
-      is_booking, user_location_country, srch_destination_id)
+      val hotel = new Hotel(srch_adults_cnt, hotel_continent, hotel_country, hotel_market, hotel_cluster, srch_children_cnt,
+        is_booking, user_location_country, srch_destination_id)
 
-    return hotel
+      return hotel
 
-  } catch {
-    case e: Exception =>
-      return null
+    } catch {
+      case e: Exception =>
+        return null
+    }
+
+  def parseLine(line: String): Optional[Hotel] = {
+    Optional.of(Hotel.createHotel(line.split(",", -1)))
   }
+
+
 }

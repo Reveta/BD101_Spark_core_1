@@ -6,15 +6,22 @@ import org.apache.spark.rdd.RDD
 object Main extends App {
 
   val sparkSession = SparkConfiguration.sparkSession
-  var taskUtil = new TaskUtil
-  var hotelsRDD: RDD[Hotel] = taskUtil.createRDD(sparkSession, "src/test/resources/test.csv")
+
+ val pathToCsv:String="src/main/scala/resources/train.csv"
+  val rdd_records = sparkSession.sparkContext.textFile(pathToCsv)
+  rdd_records.foreach(Hotel.parseLine)
+  val splitted_csv_recordsRDD = rdd_records.map((line: String) => line.split(","))
 
 
-//  val task1RDD: Array[((String, String, String), Int)] = taskUtil.task1(hotelsRDD)
+
+  var hotelsRDD: RDD[Hotel] = TaskUtil.createRDD(sparkSession, "src/main/scala/resources/train.csv")
+
+
+//  val task1RDD: Array[((Int, Int, Int), Int)] = TaskUtil.task1(hotelsRDD)
 //  task1RDD.foreach(println)
-//  val task2RDD: Array[(String, Int)] = taskUtil.task2(hotelsRDD)
+//  val task2RDD: Array[(Int, Int)] = TaskUtil.task2(hotelsRDD)
 //  task2RDD.foreach(println)
-  val task3RDD: Array[((String, String, String), Int)] = taskUtil.task3(hotelsRDD)
+  val task3RDD: Array[((Int,Int,Int), Int)] = TaskUtil.task3(hotelsRDD)
   task3RDD.foreach(println)
 
 

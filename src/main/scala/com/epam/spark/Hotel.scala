@@ -1,7 +1,5 @@
 package com.epam.spark
 
-import java.util.Optional
-
 
 case class Hotel(
                   srch_adults_cnt: Int,
@@ -31,7 +29,7 @@ object Hotel {
 
   def isHeaderCsv(line: String): Boolean = line.startsWith("date_time,site_name")
 
-  def createHotel(metadata: Array[String]): Hotel =
+  def createHotel(metadata: Array[String]): Option[Hotel]=
     try {
       val srch_adults_cnt: Int = metadata(ADULTS).toInt
       val hotel_continent: Int = metadata(HOTEL_CONTINENT).toInt
@@ -46,15 +44,17 @@ object Hotel {
       val hotel = new Hotel(srch_adults_cnt, hotel_continent, hotel_country, hotel_market, hotel_cluster, srch_children_cnt,
         is_booking, user_location_country, srch_destination_id)
 
-      return hotel
+      return Option.apply(hotel)
 
     } catch {
       case e: Exception =>
-        return null
+        return None
     }
 
-  def parseLine(line: String): Optional[Hotel] = {
-    Optional.of(Hotel.createHotel(line.split(",", -1)))
+  def parseLine(line: String): Option[Hotel] = {
+     Hotel.createHotel(line.split(",", -1))
+
+
   }
 
 

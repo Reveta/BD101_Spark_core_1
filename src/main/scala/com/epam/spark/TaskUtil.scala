@@ -11,7 +11,7 @@ object TaskUtil {
         .sparkContext
         .textFile(path)
         .filter(a => !Hotel.isHeaderCsv(a))
-        .map(a => Hotel.parseLine(a))
+        .map(a => Hotel.createHotel(a))
     val accum: LongAccumulator = sparkSession.sparkContext.longAccumulator
     rdd.filter(_.isEmpty).foreach((x) => accum.add(1))
     System.out.println("count of errors while parsing= " + accum.value)

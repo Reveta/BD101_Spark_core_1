@@ -29,8 +29,9 @@ object Hotel {
 
   def isHeaderCsv(line: String): Boolean = line.startsWith("date_time,site_name")
 
-  def createHotel(metadata: Array[String]): Option[Hotel]=
+  def createHotel(line: String): Option[Hotel]=
     try {
+      val metadata: Array[String] = parseLine(line)
       val srch_adults_cnt: Int = metadata(ADULTS).toInt
       val hotel_continent: Int = metadata(HOTEL_CONTINENT).toInt
       val hotel_country: Int = metadata(HOTEL_COUNTRY).toInt
@@ -51,8 +52,8 @@ object Hotel {
         return None
     }
 
-  def parseLine(line: String): Option[Hotel] = {
-     Hotel.createHotel(line.split(",", -1))
+  def parseLine(line: String): Array[String] = {
+     line.split(",", -1)
 
 
   }

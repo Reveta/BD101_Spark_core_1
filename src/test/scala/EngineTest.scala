@@ -6,19 +6,39 @@ import org.junit.{Assert, Test}
 class EngineTest {
 
   val spark: SparkSession = SparkConfiguration.sparkSession
-
+  val testPath: String = "src/test/resources/train.csv"
 
   @Test
   def IsRddCorrect(): Unit = {
-    val rdd: RDD[Hotel] = Engine.createHotelsRDD("src/test/resources/train.csv")
+    val rdd: RDD[Hotel] = Engine.createHotelsRDD(testPath)
 
 
     Assert.assertNotNull(rdd)
   }
 
-  @Test/*(expected = IllegalArgumentException)*/
+  @Test
+  def createHotelsRDDTest(): Unit = {
+    val expected: Int = 874
+
+    val rdd: RDD[Hotel] = Engine.createHotelsRDD(testPath)
+    val actual: Long = rdd.count()
+
+    Assert.assertEquals(expected, actual)
+  }
+
+  @Test
+  def splitLineTest(): Unit = {
+    val input: String = "2014-09-30 11:21:02,2,3,66,332,55121,72.1107,32708,0,1,9,2014-09-30,2014-10-02,2,0,1,576,3,1,1,2,50,487,91"
+    val expected: Array[String] = Array("2014-09-30 11:21:02", "2", "3", "66", "332", "55121", "72.1107", "32708", "0", "1", "9", "2014-09-30",
+      "2014-10-02", "2", "0", "1", "576", "3", "1", "1", "2", "50", "487", "91")
+    val actual: Array[String] = Hotel.splitLine(input)
+
+    Assert.assertEquals(expected.toList.toString(), actual.toList.toString())
+  }
+
+  @Test /*(expected = IllegalArgumentException)*/
   def wrongCSVPathTest(): Unit = {
-    val actual: RDD[Hotel]  = Engine.createHotelsRDD(" ")
+    val actual: RDD[Hotel] = Engine.createHotelsRDD(" ")
   }
 
   @Test

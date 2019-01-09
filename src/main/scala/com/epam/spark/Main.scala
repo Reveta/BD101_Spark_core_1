@@ -13,6 +13,8 @@ object Main extends App {
 
   val hotelsRDD: RDD[Hotel] = Engine
     .createHotelsRDD(pathCSV)
+    .cache()
+
 
   private val task1Result: Array[((Int, Int, Int), Int)] = Engine.task1(hotelsRDD)
   task1Result.foreach(println)

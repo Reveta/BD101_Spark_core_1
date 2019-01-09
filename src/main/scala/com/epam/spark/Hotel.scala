@@ -40,12 +40,14 @@ object Hotel {
 
   def isHeaderCsv(line: String): Boolean = line.startsWith("date_time,site_name")
 
-  def apply(row: String): Hotel = {
-    try {
-//      print("[INFO] Start creating Hotel - " + row + "\n")
+  def apply(row: String): Option[Hotel] = try {
+      print("[INFO] Start creating Hotel - " + row + "\n")
 
-      val rowArray: Array[String] = row.split(",", -1)
-      if (rowArray.length != 24) { println(Console.GREEN + "[ERROR] " + "rowArray.length != 24" + " - " + row + Console.RESET)}
+      val rowArray: Array[String] = splitLine(row)
+      if (rowArray.length != 24) {
+        println(Console.GREEN + "[ERROR] " + "rowArray.length != 24" + " - " + row + Console.RESET)
+        throw new Exception("rowArray.length != 24")
+      }
 
       val hotel: Hotel = new Hotel(
         Integer.valueOf(rowArray(ADULTS)),
@@ -58,11 +60,15 @@ object Hotel {
         Integer.valueOf(rowArray(USER_LOCATION_COUNTRY)),
         Integer.valueOf(rowArray(DESTINATION_ID)))
 
-      return hotel
+      return Option.apply(hotel)
     } catch {
       case e: Exception => println(Console.GREEN + "[ERROR] " + e.toString + " - " + row + Console.RESET)
-        return null
+        return None
     }
+
+
+  def splitLine(line: String): Array[String] = {
+    return line.split(",", -1)
   }
 
 

@@ -10,7 +10,8 @@ class TaskUtilTest {
     val expectedCount: Long = 0
 
     val rdd: RDD[Option[Hotel]] = TaskUtil.createRDD(SparkConfiguration.sparkSession, "src/test/resources/test.csv")
-    val actual: Array[((Int, Int, Int), Int)] = TaskUtil.task1(rdd)
+    val notNullRdd: RDD[Hotel]= TaskUtil.filterNullHotelsRDD(rdd)
+    val actual: Array[((Int, Int, Int), Int)] = TaskUtil.task1(notNullRdd)
     val sb: StringBuilder = StringBuilder.newBuilder
 
     Assert.assertEquals(expected, actual.foreach(sb.append).toString)
@@ -23,7 +24,8 @@ class TaskUtilTest {
     val expectedCount: Long = 0
 
     val rdd: RDD[Option[Hotel]] = TaskUtil.createRDD(SparkConfiguration.sparkSession, "src/test/resources/test.csv")
-    val actual: Array[(Int, Int)] = TaskUtil.task2(rdd)
+    val notNullRdd: RDD[Hotel]= TaskUtil.filterNullHotelsRDD(rdd)
+    val actual: Array[(Int, Int)] = TaskUtil.task2(notNullRdd)
     val sb: StringBuilder = StringBuilder.newBuilder
 
     Assert.assertEquals(expected, actual.foreach(sb.append).toString)
@@ -36,7 +38,8 @@ class TaskUtilTest {
     val expectedCount: Long = 0
 
     val rdd: RDD[Option[Hotel]] = TaskUtil.createRDD(SparkConfiguration.sparkSession, "src/test/resources/test.csv")
-    val actual: Array[((Int, Int, Int), Int)] = TaskUtil.task3(rdd)
+    val notNullRdd: RDD[Hotel]= TaskUtil.filterNullHotelsRDD(rdd)
+    val actual: Array[((Int, Int, Int), Int)] = TaskUtil.task3(notNullRdd)
     val sb: StringBuilder = StringBuilder.newBuilder
 
     Assert.assertEquals(expected, actual.foreach(sb.append).toString)
@@ -72,6 +75,7 @@ class TaskUtilTest {
   @Test
   def rddNotNull(): Unit = {
     Assert.assertNotNull(TaskUtil.createRDD(SparkConfiguration.sparkSession, "src/test/resources/test.csv"))
+
   }
 
   @Test(expected = classOf[org.apache.hadoop.mapred.InvalidInputException])

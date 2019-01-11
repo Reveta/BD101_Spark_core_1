@@ -15,7 +15,7 @@ case class Hotel(
                 )
 
 object Hotel {
-
+  //indexes of columns, that are needed
   val ADULTS = 13
   val HOTEL_CONTINENT = 20
   val HOTEL_COUNTRY = 21
@@ -27,9 +27,23 @@ object Hotel {
   val DESTINATION_ID = 16
 
 
+  /**
+    * Checking if line is the header of csv file.
+    *
+    * @param line
+    * @return TRUE, if line is header;
+    *         FALSE, if line isn`t header`
+    */
   def isHeaderCsv(line: String): Boolean = line.startsWith("date_time,site_name")
 
-  def createHotel(line: String): Option[Hotel]=
+  /**
+    * Creates a Hotel object
+    *
+    * @param line
+    * @return Option[Hotel]- None, if Hotel is null;
+    *         Some, if Hotel is not null
+    */
+  def createHotel(line: String): Option[Hotel] =
     try {
       val metadata: Array[String] = parseLine(line)
       val srch_adults_cnt: Int = metadata(ADULTS).toInt
@@ -52,8 +66,14 @@ object Hotel {
         return None
     }
 
+  /**
+    * Parsing an input line from csv file.
+    *
+    * @param line
+    * @return Line, splitted into array of values
+    */
   def parseLine(line: String): Array[String] = {
-     line.split(",", -1)
+    line.split(",", -1)
 
 
   }

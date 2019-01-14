@@ -16,7 +16,7 @@ parameter1: Path to csv file
 
 ## TaskUtil methods
 
-def createRDD(sparkSession: SparkSession, path: String): RDD[Option[Hotel]]
+createRDD(sparkSession: SparkSession, path: String): RDD[Option[Hotel]]
 ```
 /**
     * Creates RDD from a set of hotels, read from csv file
@@ -26,7 +26,7 @@ def createRDD(sparkSession: SparkSession, path: String): RDD[Option[Hotel]]
     * @return rdd of Option[Hotel]
     */
 ```
- def filterNullHotelsRDD(hotelsRDD: RDD[Option[Hotel]]): RDD[Hotel]
+filterNullHotelsRDD(hotelsRDD: RDD[Option[Hotel]]): RDD[Hotel]
 ```
 /**
     * Creates RDD from a set of hotels, read from csv file
@@ -36,7 +36,7 @@ def createRDD(sparkSession: SparkSession, path: String): RDD[Option[Hotel]]
     * @return rdd of Option[Hotel]
     */
 ```
-def task1(notNullHotelsRDD: RDD[Hotel]): Array[((Int, Int, Int), Int)]
+task1(notNullHotelsRDD: RDD[Hotel]): Array[((Int, Int, Int), Int)]
 ```
 /**
     * Finds top 3 most popular hotels between couples(treats hotel as composite key of continent, country and market).
@@ -46,7 +46,7 @@ def task1(notNullHotelsRDD: RDD[Hotel]): Array[((Int, Int, Int), Int)]
     *         and count is this hotel`s frequency in rdd.
     **/
 ```
-def task2(notNullHotelsRDD: RDD[Hotel]): Array[(Int, Int)]
+task2(notNullHotelsRDD: RDD[Hotel]): Array[(Int, Int)]
 ```
 /**
     * Finds the most popular country where hotels are booked and searched from the same country
@@ -56,7 +56,7 @@ def task2(notNullHotelsRDD: RDD[Hotel]): Array[(Int, Int)]
     **/
 
 ```
-def task3(notNullHotelsRDD: RDD[Hotel]): Array[((Int, Int, Int), Int)]
+task3(notNullHotelsRDD: RDD[Hotel]): Array[((Int, Int, Int), Int)]
 ```
 /**
     * Finds top 3 hotels where people with children are interested but not booked in the end

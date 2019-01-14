@@ -7,7 +7,7 @@ The recommend way of use is to build jar using maven plugin and run it with para
 ```
 mvn clean install
 ```
-* Run jar with 1 parameter using java:
+* Run jar with 1 parameter:
 ```
 java -jar pathToJarFile.jar parameter1
 pathToJarFile.jar: Path to generated jar file

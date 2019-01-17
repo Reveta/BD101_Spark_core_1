@@ -1,6 +1,6 @@
 package com.epam.spark
 
-
+/** case calss for data from csv */
 case class Hotel(
                   srch_adults_cnt: Int,
                   hotel_continent: Int,
@@ -26,7 +26,7 @@ case class Hotel(
 
 
 object Hotel {
-
+  /** Indexes from schema of csv data file */
   val ADULTS = 13
   val HOTEL_CONTINENT = 20
   val HOTEL_COUNTRY = 21
@@ -37,39 +37,42 @@ object Hotel {
   val USER_LOCATION_COUNTRY = 3
   val DESTINATION_ID = 16
 
-
+  /** Check is this line header of scv file */
   def isHeaderCsv(line: String): Boolean = line.startsWith("date_time,site_name")
 
+  /** Constructor of Hotel class
+    *
+    * @param row from scv file
+    * @return new Optional[Hotel]
+    * @return if row is not valid - return None */
   def apply(row: String): Option[Hotel] = try {
-      print("[INFO] Start creating Hotel - " + row + "\n")
+    print("[INFO] Start creating Hotel - " + row + "\n")
 
-      val rowArray: Array[String] = splitLine(row)
-      if (rowArray.length != 24) {
-        println(Console.GREEN + "[ERROR] " + "rowArray.length != 24" + " - " + row + Console.RESET)
-        throw new Exception("rowArray.length != 24")
-      }
-
-      val hotel: Hotel = new Hotel(
-        Integer.valueOf(rowArray(ADULTS)),
-        Integer.valueOf(rowArray(HOTEL_CONTINENT)),
-        Integer.valueOf(rowArray(HOTEL_COUNTRY)),
-        Integer.valueOf(rowArray(HOTEL_MARKET)),
-        Integer.valueOf(rowArray(HOTEL_CLUSTER)),
-        Integer.valueOf(rowArray(CHILDREN)),
-        Integer.valueOf(rowArray(IS_BOOKING)),
-        Integer.valueOf(rowArray(USER_LOCATION_COUNTRY)),
-        Integer.valueOf(rowArray(DESTINATION_ID)))
-
-      return Option.apply(hotel)
-    } catch {
-      case e: Exception => println(Console.GREEN + "[ERROR] " + e.toString + " - " + row + Console.RESET)
-        return None
+    val rowArray: Array[String] = splitLine(row)
+    if (rowArray.length != 24) {
+      println(Console.GREEN + "[ERROR] " + "rowArray.length != 24" + " - " + row + Console.RESET)
+      throw new Exception("rowArray.length != 24")
     }
 
+    val hotel: Hotel = new Hotel(
+      Integer.valueOf(rowArray(ADULTS)),
+      Integer.valueOf(rowArray(HOTEL_CONTINENT)),
+      Integer.valueOf(rowArray(HOTEL_COUNTRY)),
+      Integer.valueOf(rowArray(HOTEL_MARKET)),
+      Integer.valueOf(rowArray(HOTEL_CLUSTER)),
+      Integer.valueOf(rowArray(CHILDREN)),
+      Integer.valueOf(rowArray(IS_BOOKING)),
+      Integer.valueOf(rowArray(USER_LOCATION_COUNTRY)),
+      Integer.valueOf(rowArray(DESTINATION_ID)))
 
+    return Option.apply(hotel)
+  } catch {
+    case e: Exception => println(Console.GREEN + "[ERROR] " + e.toString + " - " + row + Console.RESET)
+      return None
+  }
+
+  /** parse csv file by column */
   def splitLine(line: String): Array[String] = {
     return line.split(",", -1)
   }
-
-
 }

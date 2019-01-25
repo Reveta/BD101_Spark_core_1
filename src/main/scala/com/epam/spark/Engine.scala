@@ -26,6 +26,7 @@ object Engine {
       .filter(opt => opt.isDefined)
       .map(opt => opt.get)
 
+
     return hotelRDD
   }
 

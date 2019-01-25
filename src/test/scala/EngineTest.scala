@@ -6,7 +6,7 @@ import org.junit.{Assert, Test}
 class EngineTest {
 
   val spark: SparkSession = SparkConfiguration.sparkSession
-  val testPath: String = "src/test/resources/train.csv" /** way to csv data file */
+  val testPath: String = "src/test/resources/trainWithError.csv" /** way to csv data file */
 
   @Test/*Check is RDD exist*/
   def IsRddCorrect(): Unit = {

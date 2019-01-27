@@ -5,7 +5,7 @@ import org.apache.spark.rdd.RDD
 /** Start point*/
 object Main extends App {
 
-  val defCSVDataFilePath = "src\\main\\scala\\resources\\trainSmall.csv"
+  val defCSVDataFilePath = "src\\main\\resources\\trainSmall.csv"
   val sparkSession = SparkConfiguration.sparkSession
 
   /** way to csv data file */
